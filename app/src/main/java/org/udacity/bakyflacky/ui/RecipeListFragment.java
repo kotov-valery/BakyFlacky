@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import org.udacity.bakyflacky.R;
 
 public class RecipeListFragment extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
