@@ -11,15 +11,28 @@
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver android:name=".appwidget.IngredientsListWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ingredients_list_widget_info" />
+        </receiver>
+
+        <service android:name=".appwidget.UpdateIngredientsListService"/>
+
         <activity
             android:name=".ui.StepDetailsActivity"
-            android:parentActivityName=".ui.RecipeDetailsActivity"/>
+            android:parentActivityName=".ui.RecipeDetailsActivity" />
         <activity
             android:name=".ui.RecipeDetailsActivity"
-            android:parentActivityName=".ui.MainActivity"/>
+            android:parentActivityName=".ui.MainActivity" />
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

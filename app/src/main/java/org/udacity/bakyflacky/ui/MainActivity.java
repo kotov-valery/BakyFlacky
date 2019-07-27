@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 
 import org.udacity.bakyflacky.R;
 import org.udacity.bakyflacky.adapters.RecipeAdaptor;
+import org.udacity.bakyflacky.appwidget.UpdateIngredientsListService;
 import org.udacity.bakyflacky.cookbook.CookBook;
 import org.udacity.bakyflacky.recipe.Recipe;
+import org.udacity.bakyflacky.utility.IngredientsFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private class RecipeClickListener implements RecipeAdaptor.OnRecipeClickListener {
         @Override
         public void onClick(Recipe recipe) {
+            String ingredients = IngredientsFormatter.format(recipe);
+            UpdateIngredientsListService.startActionUpdateIngredientList(getApplicationContext(), ingredients);
+
             Intent intent = new Intent(getApplicationContext(), RecipeDetailsActivity.class);
             intent.putExtra(RecipeDetailsActivity.RECIPE_OBJECT, recipe);
             startActivity(intent);
