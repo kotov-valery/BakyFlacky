@@ -17,6 +17,7 @@
 
     <TextView
         android:id="@+id/tv_step_short_description"
+        android:layout_marginTop="8dp"
         android:padding="8dp"
         android:textAlignment="center"
         android:textSize="20sp"
@@ -24,6 +25,15 @@
         android:textColor="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+        android:id="@+id/player_view"
+        android:visibility="gone"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
 
     <ImageView
         android:id="@+id/img_step_thumbnail"
@@ -37,12 +47,6 @@
         android:padding="8dp"
         android:textAlignment="textStart"
         android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/video_placeholder"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

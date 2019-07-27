@@ -25,19 +25,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.bind(this);
 
-        RecyclerView.LayoutManager reviewsLayoutManager =
-                new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recipesView.setLayoutManager(reviewsLayoutManager);
+        if (savedInstanceState == null) {
+            RecyclerView.LayoutManager reviewsLayoutManager =
+                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            recipesView.setLayoutManager(reviewsLayoutManager);
 
-        recipeClickListener = new RecipeClickListener();
+            recipeClickListener = new RecipeClickListener();
 
-        recipeAdaptor = new RecipeAdaptor(recipeClickListener);
-        recipesView.setAdapter(recipeAdaptor);
+            recipeAdaptor = new RecipeAdaptor(recipeClickListener);
+            recipesView.setAdapter(recipeAdaptor);
 
-        CookBook.fetchRecipes(recipeAdaptor);
+            CookBook.fetchRecipes(recipeAdaptor);
+        }
     }
 
     private class RecipeClickListener implements RecipeAdaptor.OnRecipeClickListener {
