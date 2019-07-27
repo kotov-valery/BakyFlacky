@@ -9,9 +9,9 @@ import android.util.Log;
 import org.udacity.bakyflacky.R;
 import org.udacity.bakyflacky.recipe.Recipe;
 
-public class DetailsActivity extends AppCompatActivity {
+public class RecipeDetailsActivity extends AppCompatActivity {
 
-    public static final String TAG = DetailsActivity.class.getSimpleName();
+    public static final String TAG = RecipeDetailsActivity.class.getSimpleName();
 
     public static final String RECIPE_OBJECT = "RecipeObject";
 

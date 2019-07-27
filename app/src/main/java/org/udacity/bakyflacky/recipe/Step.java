@@ -4,13 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Step implements Parcelable {
+    public int id;
     public String shortDescription;
     public String description;
     public String videoURL;
     public String thumbnailURL;
 
-    public Step(String shortDescription, String description,
+    public Step(int id, String shortDescription, String description,
                 String videoURL, String thumbnailURL) {
+        this.id = id;
         this.shortDescription = shortDescription;
         this.description = description;
         this. videoURL = videoURL;
@@ -18,6 +20,7 @@ public class Step implements Parcelable {
     }
 
     public Step(Parcel parcel) {
+        id = parcel.readInt();
         shortDescription = parcel.readString();
         description = parcel.readString();
         videoURL = parcel.readString();
@@ -29,6 +32,7 @@ public class Step implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(shortDescription);
         dest.writeString(description);
         dest.writeString(videoURL);
