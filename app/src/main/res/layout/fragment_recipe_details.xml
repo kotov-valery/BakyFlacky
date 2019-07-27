@@ -14,43 +14,9 @@
         android:textAlignment="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-    
-    <ImageView
-        android:id="@+id/img_recipe_preview"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/tv_recipe_ingredients"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:textAlignment="textStart"
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:id="@+id/tv_recipe_servings"
-        android:layout_margin="8dp"
-        android:padding="8dp"
-        android:textAlignment="textStart"
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:padding="8dp"
-        android:textAlignment="center"
-        android:text="Steps"
-        android:textSize="20sp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recipe_steps_list"
+        android:id="@+id/recipe_details_list"
         android:scrollbars="vertical"
         android:orientation="vertical"
         android:layout_width="match_parent"

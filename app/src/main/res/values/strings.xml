@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">BakyFlacky</string>
 
+    <!-- Recipe details view -->
     <string name="servings">Servings</string>
+    <string name="steps">Steps</string>
 </resources>

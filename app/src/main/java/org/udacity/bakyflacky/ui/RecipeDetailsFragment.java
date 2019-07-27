@@ -10,16 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.udacity.bakyflacky.R;
-import org.udacity.bakyflacky.adapters.StepsAdaptor;
+import org.udacity.bakyflacky.adapters.DetailsAdaptor;
 import org.udacity.bakyflacky.recipe.Recipe;
 import org.udacity.bakyflacky.recipe.Step;
-import org.udacity.bakyflacky.utility.ImageLoader;
-import org.udacity.bakyflacky.utility.IngredientsFormatter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,14 +23,10 @@ import butterknife.ButterKnife;
 public class RecipeDetailsFragment extends Fragment {
 
     @BindView(R.id.tv_recipe_name) TextView name;
-    @BindView(R.id.tv_recipe_ingredients) Button ingredients;
-    @BindView(R.id.tv_recipe_servings) Button servings;
-    @BindView(R.id.img_recipe_preview) ImageView preview;
-    @BindView(R.id.recipe_steps_list) RecyclerView stepsView;
+    @BindView(R.id.recipe_details_list) RecyclerView recipeDetails;
 
     private Recipe recipe;
-    private StepsAdaptor stepsAdaptor;
-    private StepsClickListener stepsClickListener;
+    private DetailsAdaptor detailsAdaptor;
 
     @Nullable
     @Override
@@ -44,11 +36,10 @@ public class RecipeDetailsFragment extends Fragment {
 
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        stepsView.setLayoutManager(layoutManager);
+        recipeDetails.setLayoutManager(layoutManager);
 
-        stepsClickListener = new StepsClickListener();
-        stepsAdaptor = new StepsAdaptor(stepsClickListener);
-        stepsView.setAdapter(stepsAdaptor);
+        detailsAdaptor = new DetailsAdaptor(new StepsClickListener());
+        recipeDetails.setAdapter(detailsAdaptor);
 
         updateView();
 
@@ -62,17 +53,11 @@ public class RecipeDetailsFragment extends Fragment {
     private void updateView() {
         if (recipe != null) {
             this.name.setText(recipe.name);
-            this.ingredients.setText(IngredientsFormatter.format(recipe));
-            this.servings.setText(getString(R.string.servings) + ": " + recipe.servings);
-            this.stepsAdaptor.setSteps(recipe.steps);
-
-            if (recipe.image != null && !recipe.image.isEmpty()) {
-                ImageLoader.fetchIntoView(recipe.image, preview);
-            }
+            this.detailsAdaptor.setRecipe(recipe);
         }
     }
 
-    private class StepsClickListener implements StepsAdaptor.OnStepsClickListener {
+    private class StepsClickListener implements DetailsAdaptor.OnStepsClickListener {
         @Override
         public void onClick(Step step) {
             Intent intent = new Intent(getActivity().getBaseContext(), StepDetailsActivity.class);
