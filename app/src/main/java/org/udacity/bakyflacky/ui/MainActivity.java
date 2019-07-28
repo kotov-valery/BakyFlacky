@@ -39,24 +39,31 @@ public class MainActivity extends AppCompatActivity {
             useTableLayout = false;
         }
 
-        if (savedInstanceState == null) {
-            RecyclerView.LayoutManager reviewsLayoutManager;
-            if (useTableLayout) {
-                reviewsLayoutManager =
-                        new GridLayoutManager(this, COLUMN_COUNT);
-            } else {
-                reviewsLayoutManager =
-                        new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            }
-            recipesView.setLayoutManager(reviewsLayoutManager);
+        RecyclerView.LayoutManager reviewsLayoutManager;
+        if (useTableLayout) {
+            reviewsLayoutManager =
+                    new GridLayoutManager(this, COLUMN_COUNT);
+        } else {
+            reviewsLayoutManager =
+                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        }
+        recipesView.setLayoutManager(reviewsLayoutManager);
 
-            recipeClickListener = new RecipeClickListener();
+        recipeClickListener = new RecipeClickListener();
+        recipeAdaptor = new RecipeAdaptor(recipeClickListener);
+        recipesView.setAdapter(recipeAdaptor);
 
-            recipeAdaptor = new RecipeAdaptor(recipeClickListener);
-            recipesView.setAdapter(recipeAdaptor);
-
+        if (savedInstanceState != null && recipeAdaptor.hasSavedState(savedInstanceState)) {
+            recipeAdaptor.restoreStateFrom(savedInstanceState);
+        } else {
             CookBook.fetchRecipes(recipeAdaptor);
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        recipeAdaptor.saveStateTo(outState);
+        super.onSaveInstanceState(outState);
     }
 
     private class RecipeClickListener implements RecipeAdaptor.OnRecipeClickListener {

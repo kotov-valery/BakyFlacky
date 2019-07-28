@@ -19,7 +19,17 @@ public class StepDetailsActivity extends AppCompatActivity {
     public static final String RECIPE_NAME = "RecipeName";
     public static final String STEP_OBJECT = "StepObject";
 
+    private String name;
+    private Step step;
+
     @BindView(R.id.tv_recipe_name) TextView recipeName;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(RECIPE_NAME, name);
+        outState.putParcelable(STEP_OBJECT, step);
+        super.onSaveInstanceState(outState);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,23 +37,28 @@ public class StepDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_steps);
         ButterKnife.bind(this);
 
-        if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            if (intent != null && intent.hasExtra(STEP_OBJECT) &&
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(STEP_OBJECT) &&
                     intent.hasExtra(RECIPE_NAME)) {
-                StepDetailsFragment detailsFragment = new StepDetailsFragment();
+            name = intent.getStringExtra(RECIPE_NAME);
+            step = intent.getParcelableExtra(STEP_OBJECT);
+        } else if (savedInstanceState != null) {
+            name = savedInstanceState.getString(RECIPE_NAME);
+            step = savedInstanceState.getParcelable(STEP_OBJECT);
+        }
 
-                String name = intent.getStringExtra(RECIPE_NAME);
-                recipeName.setText(name);
+        if (name != null) {
+            recipeName.setText(name);
+        }
 
-                Step step= intent.getParcelableExtra(STEP_OBJECT);
-                detailsFragment.setStep(step);
+        if (savedInstanceState == null) {
+            StepDetailsFragment detailsFragment = new StepDetailsFragment();
+            detailsFragment.setStep(step);
 
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .add(R.id.details_container, detailsFragment)
-                        .commit();
-            }
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.details_container, detailsFragment)
+                    .commit();
         }
     }
 }

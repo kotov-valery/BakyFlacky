@@ -36,18 +36,37 @@ public class StepDetailsFragment extends Fragment {
     @BindView(R.id.img_step_thumbnail) ImageView thumbnail;
     @BindView(R.id.player_view) SimpleExoPlayerView playerView;
 
-    private SimpleExoPlayer player;
+    private static final String STEP_OBJECT = "StepObject";
 
     private Step step;
+    private SimpleExoPlayer player;
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(STEP_OBJECT, step);
+        super.onSaveInstanceState(outState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            step = savedInstanceState.getParcelable(STEP_OBJECT);
+        }
+
         View rootView = inflater.inflate(R.layout.fragment_steps_details, container, false);
         ButterKnife.bind(this, rootView);
+
         updateView();
         initializePlayer();
+
         return rootView;
+    }
+
+    @Override
+    public void onStop() {
+        releasePlayer();
+        super.onStop();
     }
 
     public void setStep(Step step) {
