@@ -4,10 +4,13 @@ import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.TextView;
 
 import org.udacity.bakyflacky.R;
 import org.udacity.bakyflacky.recipe.Step;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class StepDetailsActivity extends AppCompatActivity {
 
@@ -16,10 +19,13 @@ public class StepDetailsActivity extends AppCompatActivity {
     public static final String RECIPE_NAME = "RecipeName";
     public static final String STEP_OBJECT = "StepObject";
 
+    @BindView(R.id.tv_recipe_name) TextView recipeName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
+        ButterKnife.bind(this);
 
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -27,8 +33,8 @@ public class StepDetailsActivity extends AppCompatActivity {
                     intent.hasExtra(RECIPE_NAME)) {
                 StepDetailsFragment detailsFragment = new StepDetailsFragment();
 
-                String recipeName = intent.getStringExtra(RECIPE_NAME);
-                detailsFragment.setName(recipeName);
+                String name = intent.getStringExtra(RECIPE_NAME);
+                recipeName.setText(name);
 
                 Step step= intent.getParcelableExtra(STEP_OBJECT);
                 detailsFragment.setStep(step);
@@ -37,9 +43,6 @@ public class StepDetailsActivity extends AppCompatActivity {
                 fragmentManager.beginTransaction()
                         .add(R.id.details_container, detailsFragment)
                         .commit();
-            } else {
-                Log.e(TAG, "Not possible to start an activity either " +
-                        "without intent or without saved state");
             }
         }
     }

@@ -31,7 +31,6 @@ import butterknife.ButterKnife;
 
 public class StepDetailsFragment extends Fragment {
 
-    @BindView(R.id.tv_recipe_name) TextView name;
     @BindView(R.id.tv_step_short_description) TextView description;
     @BindView(R.id.btn_step_instruction) Button instructions;
     @BindView(R.id.img_step_thumbnail) ImageView thumbnail;
@@ -40,7 +39,6 @@ public class StepDetailsFragment extends Fragment {
     private SimpleExoPlayer player;
 
     private Step step;
-    private String recipeName;
 
     @Nullable
     @Override
@@ -56,12 +54,7 @@ public class StepDetailsFragment extends Fragment {
         this.step= step;
     }
 
-    public void setName(String name) {
-        this.recipeName = name;
-    }
-
     private void updateView() {
-        this.name.setText(recipeName);
         this.description.setText(step.shortDescription);
         this.instructions.setText(step.description);
     }

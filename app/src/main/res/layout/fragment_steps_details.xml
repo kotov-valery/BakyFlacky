@@ -6,16 +6,6 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_recipe_name"
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:padding="8dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorWhite"
-        android:textAlignment="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
         android:id="@+id/tv_step_short_description"
         android:layout_marginTop="8dp"
         android:padding="8dp"

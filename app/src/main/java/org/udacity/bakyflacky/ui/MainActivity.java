@@ -3,6 +3,7 @@ package org.udacity.bakyflacky.ui;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -23,15 +24,30 @@ public class MainActivity extends AppCompatActivity {
     private RecipeAdaptor recipeAdaptor;
     private RecipeClickListener recipeClickListener;
 
+    private static final int COLUMN_COUNT = 3;
+    private boolean useTableLayout = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (findViewById(R.id.tablet_layout) != null) {
+            useTableLayout = true;
+        } else {
+            useTableLayout = false;
+        }
+
         if (savedInstanceState == null) {
-            RecyclerView.LayoutManager reviewsLayoutManager =
-                    new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            RecyclerView.LayoutManager reviewsLayoutManager;
+            if (useTableLayout) {
+                reviewsLayoutManager =
+                        new GridLayoutManager(this, COLUMN_COUNT);
+            } else {
+                reviewsLayoutManager =
+                        new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            }
             recipesView.setLayoutManager(reviewsLayoutManager);
 
             recipeClickListener = new RecipeClickListener();

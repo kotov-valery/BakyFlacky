@@ -22,11 +22,16 @@ import butterknife.ButterKnife;
 
 public class RecipeDetailsFragment extends Fragment {
 
-    @BindView(R.id.tv_recipe_name) TextView name;
     @BindView(R.id.recipe_details_list) RecyclerView recipeDetails;
 
     private Recipe recipe;
     private DetailsAdaptor detailsAdaptor;
+
+    private OnStepClickListener listener;
+
+    public interface OnStepClickListener {
+        void onClick(Step step);
+    }
 
     @Nullable
     @Override
@@ -50,9 +55,12 @@ public class RecipeDetailsFragment extends Fragment {
         this.recipe = recipe;
     }
 
+    public void setClickListener(OnStepClickListener listener) {
+        this.listener = listener;
+    }
+
     private void updateView() {
         if (recipe != null) {
-            this.name.setText(recipe.name);
             this.detailsAdaptor.setRecipe(recipe);
         }
     }
@@ -60,10 +68,9 @@ public class RecipeDetailsFragment extends Fragment {
     private class StepsClickListener implements DetailsAdaptor.OnStepsClickListener {
         @Override
         public void onClick(Step step) {
-            Intent intent = new Intent(getActivity().getBaseContext(), StepDetailsActivity.class);
-            intent.putExtra(StepDetailsActivity.RECIPE_NAME, recipe.name);
-            intent.putExtra(StepDetailsActivity.STEP_OBJECT, step);
-            startActivity(intent);
+            if (listener != null) {
+                listener.onClick(step);
+            }
         }
     }
 }
