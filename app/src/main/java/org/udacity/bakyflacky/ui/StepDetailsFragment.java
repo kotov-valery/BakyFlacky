@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,11 +27,17 @@ import com.google.android.exoplayer2.util.Util;
 
 import org.udacity.bakyflacky.R;
 import org.udacity.bakyflacky.recipe.Step;
+import org.udacity.bakyflacky.utility.ImageLoader;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StepDetailsFragment extends Fragment {
+
+    private final static String TAG = StepDetailsFragment.class.getSimpleName();
+
+    private final static String IMAGE_TYPE = "image/";
+    private final static String VIDEO_TYPE = "video/";
 
     @BindView(R.id.tv_step_short_description) TextView description;
     @BindView(R.id.btn_step_instruction) Button instructions;
@@ -76,10 +84,29 @@ public class StepDetailsFragment extends Fragment {
     private void updateView() {
         this.description.setText(step.shortDescription);
         this.instructions.setText(step.description);
+
+        String type = getMimeType(step.thumbnailURL);
+        if (type != null && type.contains(IMAGE_TYPE)) {
+            ImageLoader.fetchIntoView(step.thumbnailURL, thumbnail);
+        }
     }
 
+    private static String getMimeType(String url) {
+        String type = "";
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+        }
+        return type;
+    }
+
+
     private void initializePlayer() {
-        if (step != null && step.videoURL != null &&  !step.videoURL.isEmpty()) {
+        if (step == null)
+            return;
+
+        String type = getMimeType(step.videoURL);
+        if (type != null && type.contains(VIDEO_TYPE)) {
             Context context = getContext();
             player = ExoPlayerFactory.newSimpleInstance(getContext());
             playerView.setPlayer(player);
