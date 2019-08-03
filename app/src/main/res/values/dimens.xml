@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-    -->
     <dimen name="widget_margin">8dp</dimen>
-
+    <dimen name="small_size_margin">8dp</dimen>
+    <dimen name="mid_size_padding">16dp</dimen>
+    <dimen name="details_container_width">40dp</dimen>
+    <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="main_list_item_text_size">18sp</dimen>
+    <dimen name="step_text_view_text_size">18sp</dimen>
+    <dimen name="step_main_list_item_width">60dp</dimen>
+    <dimen name="recipe_main_list_item_width">80dp</dimen>
 </resources>

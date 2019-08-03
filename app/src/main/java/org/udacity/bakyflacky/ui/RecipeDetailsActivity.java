@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -12,6 +13,7 @@ import com.google.gson.Gson;
 import org.udacity.bakyflacky.R;
 import org.udacity.bakyflacky.recipe.Recipe;
 import org.udacity.bakyflacky.recipe.Step;
+import org.udacity.bakyflacky.utility.Json;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,11 +39,7 @@ public class RecipeDetailsActivity extends AppCompatActivity
         setContentView(R.layout.activity_details);
         ButterKnife.bind(this);
 
-        if (findViewById(R.id.details_tablet_layout) != null) {
-            useTabletLayout = true;
-        } else {
-            useTabletLayout = false;
-        }
+        useTabletLayout = getResources().getBoolean(R.bool.isTablet);
 
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra(RECIPE_OBJECT)) {
@@ -51,7 +49,12 @@ public class RecipeDetailsActivity extends AppCompatActivity
         } else {
             SharedPreferences preferences = getPreferences(getApplicationContext().MODE_PRIVATE);
             String recipeJson = preferences.getString(RECIPE_OBJECT, "");
-            recipe = (new Gson()).fromJson(recipeJson, Recipe.class);
+            try {
+                recipe = Json.deSerialize(recipeJson, Recipe.class);
+            } catch (ClassNotFoundException error) {
+                error.printStackTrace();
+                Log.e(TAG, "Could not parse json object: " + recipeJson);
+            }
         }
 
         if (recipe != null) {
@@ -75,8 +78,8 @@ public class RecipeDetailsActivity extends AppCompatActivity
 
         SharedPreferences preferences = getPreferences(getApplicationContext().MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(RECIPE_OBJECT, (new Gson().toJson(recipe)));
-        editor.commit();
+        editor.putString(RECIPE_OBJECT, Json.serialize(recipe));
+        editor.apply();
 
         super.onSaveInstanceState(outState);
     }

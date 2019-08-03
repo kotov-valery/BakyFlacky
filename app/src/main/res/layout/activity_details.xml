@@ -7,11 +7,7 @@
 
     <TextView
         android:id="@+id/tv_recipe_name"
-        style="@style/TextAppearance.AppCompat.Headline"
-        android:padding="8dp"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorWhite"
-        android:textAlignment="center"
+        style="@style/recipeNameStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

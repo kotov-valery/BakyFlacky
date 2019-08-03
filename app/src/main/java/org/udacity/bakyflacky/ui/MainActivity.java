@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private RecipeClickListener recipeClickListener;
 
     private static final int COLUMN_COUNT = 3;
-    private boolean useTableLayout = false;
+    private boolean useTabletLayout = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,14 +33,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        if (findViewById(R.id.tablet_layout) != null) {
-            useTableLayout = true;
-        } else {
-            useTableLayout = false;
-        }
+        useTabletLayout = getResources().getBoolean(R.bool.isTablet);
 
         RecyclerView.LayoutManager reviewsLayoutManager;
-        if (useTableLayout) {
+        if (useTabletLayout) {
             reviewsLayoutManager =
                     new GridLayoutManager(this, COLUMN_COUNT);
         } else {

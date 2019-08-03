@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.widget.RemoteViews;
 
 import org.udacity.bakyflacky.R;
@@ -25,7 +26,7 @@ public class IngredientsListWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId, String ingredients) {
         CharSequence widgetText;
-        if (ingredients == null || ingredients.isEmpty()) {
+        if (TextUtils.isEmpty(ingredients)) {
              widgetText = context.getString(R.string.appwidget_default_text);
         } else {
             widgetText = ingredients;

@@ -22,7 +22,7 @@ public class UpdateIngredientsListService extends IntentService {
         context.startService(intent);
     }
 
-    UpdateIngredientsListService() {
+    public UpdateIngredientsListService() {
         super("UpdateIngredientsListService");
     }
 

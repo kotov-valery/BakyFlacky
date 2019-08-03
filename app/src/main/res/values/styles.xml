@@ -8,4 +8,41 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="recipeNameStyle" parent="@style/TextAppearance.AppCompat.Headline">
+        <item name="android:padding">8dp</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="stepContainerStyle">
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:padding">@dimen/mid_size_padding</item>
+    </style>
+
+    <style name="cardViewStyle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">8dp</item>
+    </style>
+
+    <style name="mainListItemStyle">
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/main_list_item_text_size</item>
+        <item name="android:padding">@dimen/mid_size_padding</item>
+    </style>
+
+    <style name="stepTextViewStyle">
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">@dimen/step_text_view_text_size</item>
+        <item name="android:padding">@dimen/mid_size_padding</item>
+    </style>
+
+    <style name="stepMainListItemStyle">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_margin">@dimen/small_size_margin</item>
+    </style>
+
 </resources>

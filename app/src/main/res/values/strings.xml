@@ -12,5 +12,4 @@
 
     <!-- Errors -->
     <string name="on_step_click_listener_not_implemented_error">Parent activity has to implement onStepClickListener interface</string>
-
 </resources>
