@@ -34,14 +34,10 @@ import org.udacity.bakyflacky.R;
 import org.udacity.bakyflacky.recipe.Step;
 import org.udacity.bakyflacky.utility.ImageLoader;
 
-import java.util.concurrent.TimeUnit;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepDetailsFragment extends Fragment
-    implements ExoPlayer.EventListener
-{
+public class StepDetailsFragment extends Fragment {
 
     private final static String TAG = StepDetailsFragment.class.getSimpleName();
 
@@ -63,6 +59,8 @@ public class StepDetailsFragment extends Fragment
 
     private Step step;
     private SimpleExoPlayer player;
+
+    private boolean isFullscreenMode = false;
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -87,16 +85,47 @@ public class StepDetailsFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_steps_details, container, false);
         ButterKnife.bind(this, rootView);
 
-        updateView();
-        initializePlayer();
+        isFullscreenMode = (getResources().getBoolean(R.bool.isLandscape) &&
+                !getResources().getBoolean(R.bool.isTablet));
 
+        updateView();
         return rootView;
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (Util.SDK_INT <= 23) {
+            releasePlayer();
+        }
+    }
+
+    @Override
     public void onStop() {
-        releasePlayer();
         super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
+        }
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            initializePlayer();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isFullscreenMode) {
+            hideSystemUi();
+        }
+        if ((Util.SDK_INT <= 23 || player == null)) {
+            initializePlayer();
+        }
     }
 
     public void setStep(Step step) {
@@ -104,13 +133,33 @@ public class StepDetailsFragment extends Fragment
     }
 
     private void updateView() {
-        this.description.setText(step.shortDescription);
-        this.instructions.setText(step.description);
+        if (isFullscreenMode) {
+            this.description.setVisibility(View.GONE);
+            this.instructions.setVisibility(View.GONE);
+            this.thumbnail.setVisibility(View.GONE);
+        } else {
+            this.description.setText(step.shortDescription);
+            this.description.setVisibility(View.VISIBLE);
+            this.instructions.setText(step.description);
+            this.instructions.setVisibility(View.VISIBLE);
+            updateImageView();
+       }
+    }
 
+    private void updateImageView() {
         String type = getMimeType(step.thumbnailURL);
         if (type != null && type.contains(IMAGE_TYPE)) {
             ImageLoader.fetchIntoView(step.thumbnailURL, thumbnail);
         }
+    }
+
+    private void hideSystemUi() {
+        playerView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
     private static String getMimeType(String url) {
@@ -133,7 +182,6 @@ public class StepDetailsFragment extends Fragment
             player = ExoPlayerFactory.newSimpleInstance(getContext());
             playerView.setPlayer(player);
             playerView.setVisibility(View.VISIBLE);
-            player.addListener(this);
 
             Uri videoUri = Uri.parse(step.videoURL);
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context,
@@ -146,6 +194,7 @@ public class StepDetailsFragment extends Fragment
                     null);
 
             player.prepare(source, false, true);
+            player.seekTo(position);
             player.setPlayWhenReady(isPlaying);
         }
     }
@@ -155,16 +204,6 @@ public class StepDetailsFragment extends Fragment
             player.stop();
             player.release();
             player = null;
-        }
-    }
-
-    @Override
-    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-        if (playbackState == ExoPlayer.STATE_READY) {
-            player.seekTo(position);
-        } else if (playbackState == ExoPlayer.STATE_ENDED) {
-            player.stop();
-            isPlaying = false;
         }
     }
 }
