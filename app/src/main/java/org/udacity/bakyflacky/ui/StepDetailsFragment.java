@@ -64,10 +64,12 @@ public class StepDetailsFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putParcelable(STEP_OBJECT, step);
-        outState.putBoolean(PLAYER_STATE, player.getPlayWhenReady());
-        outState.putLong(PLAYER_POSITION, player.getCurrentPosition());
         super.onSaveInstanceState(outState);
+        outState.putParcelable(STEP_OBJECT, step);
+        if (player == null) {
+            outState.putBoolean(PLAYER_STATE, isPlaying);
+            outState.putLong(PLAYER_POSITION, position);
+        }
     }
 
     @Nullable
@@ -201,7 +203,8 @@ public class StepDetailsFragment extends Fragment {
 
     private void releasePlayer() {
         if (player != null) {
-            player.stop();
+            isPlaying = player.getPlayWhenReady();
+            position = player.getCurrentPosition();
             player.release();
             player = null;
         }
